@@ -12,11 +12,16 @@ import { TodoInterface } from '../../types/todos.interface';
 })
 export class MainComponent implements OnInit {
   visibleTodos$: Observable<TodoInterface[]>; 
+  noTodoClass$: Observable<boolean>
 
   constructor(
     private todosService: TodosService
   ) 
   { 
+    this.noTodoClass$ = this.todosService.todos$.pipe(
+      map(todos => todos.length === 0)
+    )
+
     this.visibleTodos$ = combineLatest(
       this.todosService.todos$,
       this.todosService.filter$
